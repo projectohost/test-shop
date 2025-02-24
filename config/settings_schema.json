@@ -1467,58 +1467,93 @@
     ]
   },
   {
-    "name": "Age Verification Settings",
+    "name": "Age Verification Settings POPUP",
     "settings": [
       {
         "type": "checkbox",
         "id": "use_custom_options",
         "label": "Enable Custom Popup Options",
         "default": true
-      }
-    ],
-    "blocks": [
+      },
       {
-        "type": "custom_message",
-        "name": "Custom Message",
-        "settings": [
-          {
-            "type": "text",
-            "id": "page",
-            "label": "Page Handle",
-            "info": "Enter the page handle where this custom message should appear (e.g., 'contact')."
-          },
-          {
-            "type": "text",
-            "id": "custom_text",
-            "label": "Custom Message Text",
-            "default": "This is a custom message.",
-            "info": "Enter the custom message for the popup."
-          },
-          {
-            "type": "text",
-            "id": "yes_button_text",
-            "label": "Yes Button Text",
-            "default": "Proceed"
-          },
-          {
-            "type": "url",
-            "id": "yes_button_link",
-            "label": "Yes Button Link"
-          },
-          {
-            "type": "text",
-            "id": "no_button_text",
-            "label": "No Button Text",
-            "default": "Cancel"
-          },
-          {
-            "type": "url",
-            "id": "no_button_link",
-            "label": "No Button Link"
-          }
-        ]
-      }
+        "type": "text",
+        "id": "allowed_pages",
+        "label": "Pages to check age",
+        "default": "all",
+        "info": "Specify the pages that require age verification (comma-separated)."
+      },
+      {
+        "type": "text",
+        "id": "allowed_collections",
+        "label": "Collections to check age",
+        "default": "all",
+        "info": "Specify the collections that require age verification (comma-separated)."
+      },
+      {
+        "type": "text",
+        "id": "question",
+        "label": "Basic question to confirm",
+        "default": "Please confirm your age:"
+      },
+      {
+        "type": "text",
+        "id": "question_confirmation",
+        "label": "Main question",
+        "default": "Are you 18 or older?"
+      },
+      {
+        "type": "text",
+        "id": "yes_button",
+        "label": "Yes button text",
+        "default": "Yes"
+      },
+      {
+        "type": "text",
+        "id": "no_button",
+        "label": "No button text",
+        "default": "No"
+      },
+      {
+        "type": "text",
+        "id": "custom_popup_text",
+        "label": "Custom Popup Text",
+        "default": "This is a custom message.",
+        "info": "Enter the custom message you want to display on the popup."
+      },
+      {
+        "type": "text",
+        "id": "custom_yes_button_text",
+        "label": "Custom Yes Button Text",
+        "default": "Proceed",
+        "info": "Enter the custom text for the 'Yes' button."
+      },
+      {
+        "type": "text",
+        "id": "custom_yes_button_link",
+        "label": "Custom Yes Button Link",
+        "default": "/pages/contact",
+        "info": "Enter the link that the 'Yes' button should redirect to."
+      },
+      {
+        "type": "text",
+        "id": "custom_no_button_text",
+        "label": "Custom No Button Text",
+        "default": "Cancel",
+        "info": "Enter the custom text for the 'No' button."
+      },
+      {
+        "type": "text",
+        "id": "custom_no_button_link",
+        "label": "Custom No Button Link",
+        "default": "/",
+        "info": "Enter the link that the 'No' button should redirect to."
+      },
+      {
+        "type": "text",
+        "id": "custom_message_pages",
+        "label": "Pages for Custom Message",
+        "default": "contact"
+      },
     ]
   }
-  
 ]

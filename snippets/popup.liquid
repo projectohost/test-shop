@@ -22,49 +22,44 @@
 {% endcomment %}
 
 {% comment %} WORKING {% endcomment %}
+{% assign allowed_pages = settings.allowed_pages | split: "," %}
+{% assign allowed_collections = settings.allowed_collections | split: "," %}
+{% assign custom_message_pages = settings.custom_message_pages | split: "," %}
+{% assign use_custom_options = settings.use_custom_options %}
 
-{% assign custom_messages = '' %}
-{% for block in section.blocks %}
-  {% assign custom_messages = custom_messages | append: block.settings.page | append: '|' | append: block.settings.custom_text | append: '|' | append: block.settings.yes_button_text | append: '|' | append: block.settings.yes_button_link | append: '|' | append: block.settings.no_button_text | append: '|' | append: block.settings.no_button_link | append: ',' %}
-{% endfor %}
+{% assign custom_yes_button_link = settings.custom_yes_button_link %}
+{% assign custom_no_button_link = settings.custom_no_button_link %}
 
 <script>
-  window.customMessages = "{{ custom_messages | strip_newlines }}".split(',').reduce((acc, item) => {
-    if (item) {
-      const parts = item.split('|');
-      acc[parts[0].trim()] = {
-        text: parts[1],
-        yesText: parts[2],
-        yesLink: parts[3],
-        noText: parts[4],
-        noLink: parts[5]
-      };
-    }
-    return acc;
-  }, {});
-
-  function showCustomPopup() {
-    const currentPage = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
-    if (window.customMessages[currentPage]) {
-      const message = window.customMessages[currentPage];
-      document.getElementById("popup-text").innerText = message.text;
-      document.getElementById("yes-button").innerText = message.yesText;
-      document.getElementById("yes-button").setAttribute("onclick", `window.location.href='${message.yesLink}'`);
-      document.getElementById("no-button").innerText = message.noText;
-      document.getElementById("no-button").setAttribute("onclick", `window.location.href='${message.noLink}'`);
-      document.getElementById("custom-popup").classList.remove("hidden");
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", showCustomPopup);
+  window.allowedPages = {{ allowed_pages | json }};
+  window.allowedCollections = {{ allowed_collections | json }};
+  window.customMessagePages = {{ custom_message_pages | json }};
+  window.currentPage = "{{ request.path }}".toLowerCase();
+  window.useCustomOptions = {{ use_custom_options | json }};
+  window.customYesButtonLink = "{{ settings.custom_yes_button_link }}";
+  window.customNoButtonLink = "{{ settings.custom_no_button_link }}";
 </script>
 
-<div id="custom-popup" class="popup hidden">
-  <div class="popup-content">
-    <p id="popup-text"></p>
-    <button id="yes-button" class="yes-button"></button>
-    <button id="no-button" class="no-button"></button>
+{% if request.path contains '/pages/' or request.path contains '/collections/' %}
+  {% if use_custom_options %}
+    <!-- Custom Message Popup -->
+    <div id="custom-popup" class="popup hidden">
+      <div class="popup-content">
+        <p id="popup-text">{{ settings.custom_popup_text }}</p>
+        <button onclick="checkConfirm(true, '{{ custom_yes_button_link | escape }}')" id="yes-button" class="yes-button">{{ settings.custom_yes_button_text }}</button>
+        <button onclick="checkConfirm(false, '{{ custom_no_button_link | escape }}')" id="no-button" class="no-button">{{ settings.custom_no_button_text }}</button>
+      </div>
+    </div>
+  {% endif %}
+  
+  <!-- Age Verification Popup -->
+  <div id="age-verification-popup" class="popup hidden">
+    <div class="popup-content">
+      <p id="popup-text">{{ settings.question }} <br><span> {{ settings.question_confirmation }} </span></p>
+      <button onclick="checkAge(true)" class="yes-button">{{ settings.yes_button }}</button>
+      <button onclick="checkAge(false)" class="no-button">{{ settings.no_button }}</button>
+    </div>
   </div>
-</div>
+{% endif %}
 
 {% comment %} WORKING END{% endcomment %}
